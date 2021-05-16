@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bluecyan.mapper.HomeMapper">
+  <resultMap id="BaseResultMap" type="com.bluecyan.pojo.Home">
+    <id column="home_id" jdbcType="INTEGER" property="homeId" />
+    <result column="navigation_left" jdbcType="VARCHAR" property="navigationLeft" />
+    <result column="navigation_bar" jdbcType="VARCHAR" property="navigationBar" />
+    <result column="sideshow" jdbcType="VARCHAR" property="sideshow" />
+    <result column="recommend" jdbcType="VARCHAR" property="recommend" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    home_id, navigation_left, navigation_bar, sideshow, recommend
+  </sql>
+  <select id="selectByExample" parameterType="com.bluecyan.pojo.HomeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from home
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from home
+    where home_id = #{homeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from home
+    where home_id = #{homeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bluecyan.pojo.HomeExample">
+    delete from home
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bluecyan.pojo.Home">
+    insert into home (home_id, navigation_left, navigation_bar, 
+      sideshow, recommend)
+    values (#{homeId,jdbcType=INTEGER}, #{navigationLeft,jdbcType=VARCHAR}, #{navigationBar,jdbcType=VARCHAR}, 
+      #{sideshow,jdbcType=VARCHAR}, #{recommend,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bluecyan.pojo.Home">
+    insert into home
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="homeId != null">
+        home_id,
+      </if>
+      <if test="navigationLeft != null">
+        navigation_left,
+      </if>
+      <if test="navigationBar != null">
+        navigation_bar,
+      </if>
+      <if test="sideshow != null">
+        sideshow,
+      </if>
+      <if test="recommend != null">
+        recommend,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="homeId != null">
+        #{homeId,jdbcType=INTEGER},
+      </if>
+      <if test="navigationLeft != null">
+        #{navigationLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="navigationBar != null">
+        #{navigationBar,jdbcType=VARCHAR},
+      </if>
+      <if test="sideshow != null">
+        #{sideshow,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bluecyan.pojo.HomeExample" resultType="java.lang.Long">
+    select count(*) from home
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update home
+    <set>
+      <if test="record.homeId != null">
+        home_id = #{record.homeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.navigationLeft != null">
+        navigation_left = #{record.navigationLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="record.navigationBar != null">
+        navigation_bar = #{record.navigationBar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sideshow != null">
+        sideshow = #{record.sideshow,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recommend != null">
+        recommend = #{record.recommend,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update home
+    set home_id = #{record.homeId,jdbcType=INTEGER},
+      navigation_left = #{record.navigationLeft,jdbcType=VARCHAR},
+      navigation_bar = #{record.navigationBar,jdbcType=VARCHAR},
+      sideshow = #{record.sideshow,jdbcType=VARCHAR},
+      recommend = #{record.recommend,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bluecyan.pojo.Home">
+    update home
+    <set>
+      <if test="navigationLeft != null">
+        navigation_left = #{navigationLeft,jdbcType=VARCHAR},
+      </if>
+      <if test="navigationBar != null">
+        navigation_bar = #{navigationBar,jdbcType=VARCHAR},
+      </if>
+      <if test="sideshow != null">
+        sideshow = #{sideshow,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where home_id = #{homeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bluecyan.pojo.Home">
+    update home
+    set navigation_left = #{navigationLeft,jdbcType=VARCHAR},
+      navigation_bar = #{navigationBar,jdbcType=VARCHAR},
+      sideshow = #{sideshow,jdbcType=VARCHAR},
+      recommend = #{recommend,jdbcType=VARCHAR}
+    where home_id = #{homeId,jdbcType=INTEGER}
+  </update>
+</mapper>

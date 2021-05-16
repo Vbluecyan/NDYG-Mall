@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bluecyan.mapper.ClothingExtendMapper">
+    <resultMap id="BaseResultMap" type="com.bluecyan.pojo.Clothing">
+        <id column="clothing_id" jdbcType="VARCHAR" property="clothingId" />
+        <result column="date" jdbcType="DATE" property="date" />
+        <result column="inventory" jdbcType="INTEGER" property="inventory" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="picture" jdbcType="VARCHAR" property="picture" />
+        <result column="price" jdbcType="INTEGER" property="price" />
+        <result column="sex" jdbcType="CHAR" property="sex" />
+        <result column="size" jdbcType="VARCHAR" property="size" />
+        <result column="brand_id" jdbcType="INTEGER" property="brandId" />
+        <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+        <result column="style_id" jdbcType="INTEGER" property="styleId" />
+        <result column="texture" jdbcType="VARCHAR" property="texture" />
+        <result column="thickness" jdbcType="VARCHAR" property="thickness" />
+        <result column="elastic" jdbcType="VARCHAR" property="elastic" />
+        <result column="colour" jdbcType="VARCHAR" property="colour" />
+        <result column="season" jdbcType="VARCHAR" property="season" />
+        <result column="sales" jdbcType="INTEGER" property="sales" />
+        <result column="source" jdbcType="TINYINT" property="source" />
+        <!-- 一对一级联 fetchType="lazy" 获取当前POJO后延迟加载对应的数据 -->
+        <association property="brand" column="brand_id" fetchType="lazy" select="com.bluecyan.mapper.BrandMapper.selectByPrimaryKey" />
+        <association property="category" column="category_id" fetchType="lazy" select="com.bluecyan.mapper.CategoryMapper.selectByPrimaryKey" />
+        <association property="style" column="style_id" fetchType="lazy" select="com.bluecyan.mapper.StyleMapper.selectByPrimaryKey" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    clothing_id, `date`, inventory, title, picture, price, sex, `size`, clothing.brand_id, clothing.category_id,
+    clothing.style_id, texture, thickness, elastic, colour, season, sales, source
+     </sql>
+
+    <select id="getClothingListBySearch" parameterType="searchCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM clothing,brand,category,style
+        WHERE clothing.brand_id = brand.brand_id AND clothing.category_id = category.category_id AND clothing.style_id = style.style_id
+        AND (title LIKE "%${keyword}%" OR brand.brand_name LIKE "%${keyword}%" OR category.category_name LIKE "%${keyword}%" OR style.style_name LIKE "%${keyword}%")
+        <if test="brands != null and brands.length != 0">
+            AND clothing.brand_id IN
+            <foreach collection="brands" item="brand" open="(" separator="," close=")" >
+                #{brand}
+            </foreach>
+        </if>
+        <if test="categorys != null and categorys.length != 0">
+            AND clothing.category_id IN
+            <foreach collection="categorys" item="category" open="(" separator="," close=")" >
+                #{category}
+            </foreach>
+        </if>
+        <if test="styles != null and styles.length != 0">
+            AND clothing.style_id IN
+            <foreach collection="styles" item="style" open="(" separator="," close=")" >
+                #{style}
+            </foreach>
+        </if>
+    <!--    <if test="sizes != null and sizes.length != 0">
+            AND `size` REGEXP
+            "<foreach collection="sizes" item="size"  separator="|"  >
+                #{size}
+            </foreach>"
+        </if>-->
+        <!-- REGEXP后只是一个字符串参数，不能用foreach拼接一个参数 -->
+        <if test="sizes != null and sizes != ''">
+            AND `size` REGEXP #{sizes}
+        </if>
+        <if test="sexs != null and sexs.length != 0">
+            AND sex IN
+            <foreach collection="sexs" item="sex" open="(" separator="," close=")" >
+                #{sex}
+            </foreach>
+        </if>
+        <!-- 因为这里的order是一个字段名和排序，需要直接进行原始sql拼接才能生效
+        如果用#{} 结果是：ORDER BY "sales DESC"
+        用${} 结果是：ORDER BY sales DESC -->
+        <if test="order != null and order != ''">
+            ORDER BY ${order}
+        </if>
+    </select>
+
+
+    <select id="getAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from clothing
+        where clothing_id = #{clothingId,jdbcType=VARCHAR}
+    </select>
+</mapper>

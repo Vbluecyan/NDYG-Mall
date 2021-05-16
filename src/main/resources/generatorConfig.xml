@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--mysql 连接数据库jar 这里选择自己本地位置;
+    如果不知道maven本地仓库地址，可以使用EveryThing工具全局搜索mysql-connector-java，找到jar包位置；
+    也可以手动下载一个jar放在指定位置，进行引用。
+    -->
+    <classPathEntry location="D:/maven/repository/mysql/mysql-connector-java/8.0.18/mysql-connector-java-8.0.18.jar"/>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 是否去除所有自动生成的注释,true：是,false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/ndyg?serverTimezone=Asia/Shanghai"
+                        userId="root"
+                        password="jk456789">
+            <!-- 解决匹配到其他数据库中与本数据库中表同名的表 -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+           NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 指定javaBean生成的位置
+            targetPackage：生成的类要放的包，真实的包受enableSubPackages属性控制；
+            targetProject：目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录
+         -->
+        <javaModelGenerator targetPackage="com.bluecyan.pojo" targetProject="src/main/java">
+            <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false；如果多个数据库改为true分目录 -->
+            <property name="enableSubPackages" value="true"/>
+            <!-- 设置是否在getter方法中，对String类型字段调用trim()方法 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--  指定mapper映射文件生成的位置
+           targetPackage、targetProject同javaModelGenerator中作用一样-->
+        <sqlMapGenerator targetPackage="com.bluecyan.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 指定mapper接口生成的位置
+         targetPackage、targetProject同javaModelGenerator中作用一样
+         -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.bluecyan.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 指定数据库表
+        domainObjectName：生成的domain类的名字,当表名和domain类的名字有差异时一定要设置，如果不设置，直接使用表名作为domain类的名字；
+        可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面；
+        -->
+<!--        <table tableName="admin" ></table>-->
+<!--        <table tableName="brand" ></table>-->
+<!--        <table tableName="category" ></table>-->
+<!--        <table tableName="clothing" ></table>-->
+<!--        <table tableName="communication" ></table>-->
+<!--        <table tableName="home" ></table>-->
+<!--        <table tableName="order" ></table>-->
+<!--        <table tableName="style" ></table>-->
+        <table tableName="user" ></table>
+<!--        <table tableName="user_rent_order" ></table>-->
+        <!-- <table tableName="admin" domainObjectName="Admin"></table> -->
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <!--  maven项目默认的web.xml版本 <%@ page isELignored="true" %> 所以用不了EL表达式和JSTL,这里改成3.0版本-->
+
+  <display-name>Archetype Created Web Application</display-name>
+
+  <!-- 设置spring配置文件applicationContext.xml的路径,默认加载WEB-INF目录下的applicationContext.xml配置文件 -->
+  <!-- 用来整合Spring和Spring MVC -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+  <!-- 解决中文乱码的过滤器,一定要放在所有过滤器之前 只对post请求过滤 -->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <!-- 指定编码 -->
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <!-- 设置请求编码格式为指定编码 -->
+    <init-param>
+      <param-name>forceRequestEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <!-- 设置响应编码格式为指定编码 -->
+    <init-param>
+      <param-name>forceResponseEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+
+  <!-- 使用Rest风格的URI，将页面普通的post请求转为指定的delete或者put请求 -->
+  <!-- <form action="..." method="post"> -->
+  <!--   <input type="hidden" name="_method" value="delete" /> -->
+  <!--   <input type="hidden" name="_method" value="put" /> -->
+  <!-- </form> -->
+  <!-- delete请求支持 和  put请求支持 需要设置 _method -->
+  <filter>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <!-- put请求支持 不需要设置 _method  可直接发送put请求 -->
+  <filter>
+    <filter-name>HttpPutFormContentFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+  </filter>
+
+  <!-- <filter>执行顺序跟<filter-mapping>的顺序有关，先声明的先执行 -->
+  <!-- 拦截所有请求，过滤器一般设置/*，/*比/优先级高 -->
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>HttpPutFormContentFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- 配置监听器ContextLoaderListener用以初始化Spring IoC容器 -->
+  <!-- 默认加载WEB-INF目录下的applicationContext.xml配置文件 -->
+  <!-- 用来整合Spring和Spring MVC -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!-- 配置前端控制器DispatcherServlet -->
+  <!-- 默认加载WEB-INF目录下的dispatcherServlet-servlet.xml配置文件 -->
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 设置Spring MVC配置文件dispatcherServlet-servlet.xml的路径 -->
+    <!-- 默认加载WEB-INF目录下的dispatcherServlet-servlet.xml配置文件 -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:dispatcher-servlet.xml</param-value>
+    </init-param>
+    <!-- 启动服务器，初始化该servlet，非0数字表示初始化顺序 -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- 拦截所有请求，包括静态资源 -->
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+  <!--  设置欢迎界面，默认是index.jsp-->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+</web-app>

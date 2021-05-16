@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- Spring配置文件的核心点（spring原配置、数据源、与mybatis的整合、事务控制） -->
+
+    <!-- ==========Spring配置========== -->
+    <!-- 开启注解的扫描，希望处理service层和dao(mapper)层，controller层不需要Spring框架去处理 -->
+    <context:component-scan base-package="com.bluecyan" >
+        <!-- 配置不扫描哪些注解 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!-- ================================================== -->
+
+    <!-- ==========Spring整合MyBatis框架========== -->
+    <!-- 加载配置(properties)文件 -->
+    <context:property-placeholder location="classpath:c3p0Config.properties" />
+    <!-- 配置连接池 -->
+    <!-- destroy-method=”close”属性，以便Spring容器关闭时，数据源能够正常关闭。防止多次关闭服务器后存在太多数据库连接未关闭 -->
+    <bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${c3p0.driverClass}"/>
+        <property name="jdbcUrl" value="${c3p0.jdbcUrl}"/>
+        <property name="user" value="${c3p0.user}"/>
+        <property name="password" value="${c3p0.password}"/>
+        <property name="initialPoolSize" value="${c3p0.initialPoolSize}" />
+        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>
+        <property name="minPoolSize" value="${c3p0.minPoolSize}"/>
+        <property name="acquireIncrement" value="${c3p0.acquireIncrement}"/>
+    </bean>
+
+    <!-- 配置SqlSessionFactory工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="pooledDataSource" />
+        <!-- 指定mybatis全局配置文件的位置 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- 指定mybatis mapper文件的位置，如果xml文件和mapper接口路径同，可不配置 -->
+        <!--        <property name="mapperLocations" value="classpath:com/bluecyan/mapper/*.xml" />-->
+    </bean>
+
+    <!-- 采用自动扫描方式创建mapper bean，放入IoC容器中 -->
+    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.bluecyan.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <!-- 指定标注才扫描成为Mapper -->
+        <property name="annotationClass" value="org.springframework.stereotype.Repository" />
+    </bean>
+
+
+    <!-- 配置一个SqlSessionTemplate(实现了SqlSession接口),设置mybatis执行器为BATCH,可以执行批量操作 -->
+    <!--    我设置executorType总是失败，不知道为什么。建议还是用sqlSessionFactory设置mybatis执行器为BATCH,进行批量操作-->
+    <!--    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">-->
+    <!--        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>-->
+    <!--        <constructor-arg name="executorType" value="BATCH"></constructor-arg>-->
+    <!--    </bean>-->
+    <!-- ================================================== -->
+
+    <!-- ==========配置Spring框架声明式事务管理========== -->
+    <!-- 事务管理器配置数据库事务 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="pooledDataSource" />
+    </bean>
+
+    <!-- 使用注解定义事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- ================================================== -->
+
+</beans>

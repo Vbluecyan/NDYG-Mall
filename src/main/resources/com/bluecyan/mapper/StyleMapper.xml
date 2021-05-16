@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bluecyan.mapper.StyleMapper">
+  <resultMap id="BaseResultMap" type="com.bluecyan.pojo.Style">
+    <id column="style_id" jdbcType="INTEGER" property="styleId" />
+    <result column="style_name" jdbcType="VARCHAR" property="styleName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    style_id, style_name
+  </sql>
+  <select id="selectByExample" parameterType="com.bluecyan.pojo.StyleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from style
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from style
+    where style_id = #{styleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from style
+    where style_id = #{styleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bluecyan.pojo.StyleExample">
+    delete from style
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bluecyan.pojo.Style">
+    insert into style (style_id, style_name)
+    values (#{styleId,jdbcType=INTEGER}, #{styleName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bluecyan.pojo.Style">
+    insert into style
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="styleId != null">
+        style_id,
+      </if>
+      <if test="styleName != null">
+        style_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="styleId != null">
+        #{styleId,jdbcType=INTEGER},
+      </if>
+      <if test="styleName != null">
+        #{styleName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bluecyan.pojo.StyleExample" resultType="java.lang.Long">
+    select count(*) from style
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update style
+    <set>
+      <if test="record.styleId != null">
+        style_id = #{record.styleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.styleName != null">
+        style_name = #{record.styleName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update style
+    set style_id = #{record.styleId,jdbcType=INTEGER},
+      style_name = #{record.styleName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bluecyan.pojo.Style">
+    update style
+    <set>
+      <if test="styleName != null">
+        style_name = #{styleName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where style_id = #{styleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bluecyan.pojo.Style">
+    update style
+    set style_name = #{styleName,jdbcType=VARCHAR}
+    where style_id = #{styleId,jdbcType=INTEGER}
+  </update>
+</mapper>

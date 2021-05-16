@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--order 是 mysql 保留字，作为表名和列名使用时要用反引号包裹-->
+<mapper namespace="com.bluecyan.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.bluecyan.pojo.Order">
+    <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="clothing_id" jdbcType="VARCHAR" property="clothingId" />
+    <result column="money" jdbcType="INTEGER" property="money" />
+    <result column="creation_datetime" jdbcType="TIMESTAMP" property="creationDatetime" />
+    <result column="finish_datetime" jdbcType="TIMESTAMP" property="finishDatetime" />
+    <result column="expectant_return_date" jdbcType="DATE" property="expectantReturnDate" />
+    <result column="actual_return_date" jdbcType="DATE" property="actualReturnDate" />
+    <result column="comment_picture" jdbcType="VARCHAR" property="commentPicture" />
+    <result column="comment_text" jdbcType="VARCHAR" property="commentText" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    order_id, user_id, clothing_id, money, creation_datetime, finish_datetime, expectant_return_date, 
+    actual_return_date, comment_picture, comment_text
+  </sql>
+  <select id="selectByExample" parameterType="com.bluecyan.pojo.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from `order`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `order`
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from `order`
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bluecyan.pojo.OrderExample">
+    delete from `order`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bluecyan.pojo.Order">
+    insert into `order` (order_id, user_id, clothing_id,
+      money, creation_datetime, finish_datetime, 
+      expectant_return_date, actual_return_date, comment_picture, 
+      comment_text)
+    values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{clothingId,jdbcType=VARCHAR}, 
+      #{money,jdbcType=INTEGER}, #{creationDatetime,jdbcType=TIMESTAMP}, #{finishDatetime,jdbcType=TIMESTAMP}, 
+      #{expectantReturnDate,jdbcType=DATE}, #{actualReturnDate,jdbcType=DATE}, #{commentPicture,jdbcType=VARCHAR}, 
+      #{commentText,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bluecyan.pojo.Order">
+    insert into `order`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="clothingId != null">
+        clothing_id,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="creationDatetime != null">
+        creation_datetime,
+      </if>
+      <if test="finishDatetime != null">
+        finish_datetime,
+      </if>
+      <if test="expectantReturnDate != null">
+        expectant_return_date,
+      </if>
+      <if test="actualReturnDate != null">
+        actual_return_date,
+      </if>
+      <if test="commentPicture != null">
+        comment_picture,
+      </if>
+      <if test="commentText != null">
+        comment_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clothingId != null">
+        #{clothingId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=INTEGER},
+      </if>
+      <if test="creationDatetime != null">
+        #{creationDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDatetime != null">
+        #{finishDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectantReturnDate != null">
+        #{expectantReturnDate,jdbcType=DATE},
+      </if>
+      <if test="actualReturnDate != null">
+        #{actualReturnDate,jdbcType=DATE},
+      </if>
+      <if test="commentPicture != null">
+        #{commentPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="commentText != null">
+        #{commentText,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bluecyan.pojo.OrderExample" resultType="java.lang.Long">
+    select count(*) from `order`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `order`
+    <set>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clothingId != null">
+        clothing_id = #{record.clothingId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationDatetime != null">
+        creation_datetime = #{record.creationDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.finishDatetime != null">
+        finish_datetime = #{record.finishDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expectantReturnDate != null">
+        expectant_return_date = #{record.expectantReturnDate,jdbcType=DATE},
+      </if>
+      <if test="record.actualReturnDate != null">
+        actual_return_date = #{record.actualReturnDate,jdbcType=DATE},
+      </if>
+      <if test="record.commentPicture != null">
+        comment_picture = #{record.commentPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentText != null">
+        comment_text = #{record.commentText,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `order`
+    set order_id = #{record.orderId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      clothing_id = #{record.clothingId,jdbcType=VARCHAR},
+      money = #{record.money,jdbcType=INTEGER},
+      creation_datetime = #{record.creationDatetime,jdbcType=TIMESTAMP},
+      finish_datetime = #{record.finishDatetime,jdbcType=TIMESTAMP},
+      expectant_return_date = #{record.expectantReturnDate,jdbcType=DATE},
+      actual_return_date = #{record.actualReturnDate,jdbcType=DATE},
+      comment_picture = #{record.commentPicture,jdbcType=VARCHAR},
+      comment_text = #{record.commentText,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bluecyan.pojo.Order">
+    update `order`
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clothingId != null">
+        clothing_id = #{clothingId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=INTEGER},
+      </if>
+      <if test="creationDatetime != null">
+        creation_datetime = #{creationDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDatetime != null">
+        finish_datetime = #{finishDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectantReturnDate != null">
+        expectant_return_date = #{expectantReturnDate,jdbcType=DATE},
+      </if>
+      <if test="actualReturnDate != null">
+        actual_return_date = #{actualReturnDate,jdbcType=DATE},
+      </if>
+      <if test="commentPicture != null">
+        comment_picture = #{commentPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="commentText != null">
+        comment_text = #{commentText,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bluecyan.pojo.Order">
+    update `order`
+    set user_id = #{userId,jdbcType=VARCHAR},
+      clothing_id = #{clothingId,jdbcType=VARCHAR},
+      money = #{money,jdbcType=INTEGER},
+      creation_datetime = #{creationDatetime,jdbcType=TIMESTAMP},
+      finish_datetime = #{finishDatetime,jdbcType=TIMESTAMP},
+      expectant_return_date = #{expectantReturnDate,jdbcType=DATE},
+      actual_return_date = #{actualReturnDate,jdbcType=DATE},
+      comment_picture = #{commentPicture,jdbcType=VARCHAR},
+      comment_text = #{commentText,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>
