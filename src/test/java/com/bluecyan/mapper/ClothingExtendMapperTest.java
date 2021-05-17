@@ -1,6 +1,7 @@
 package com.bluecyan.mapper;
 
 import com.bluecyan.pojo.Clothing;
+import com.bluecyan.pojo.Home;
 import com.bluecyan.pojo.SearchCondition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,9 @@ public class ClothingExtendMapperTest {
     @Autowired
     ClothingExtendMapper clothingExtendMapper;
 
+    @Autowired
+    HomeExtendMapper homeExtendMapper;
+
     @Test
     public void countByExample() {
     }
@@ -41,6 +45,13 @@ public class ClothingExtendMapperTest {
     public void insert() {
     }
 
+    /**
+     * @Author bluecyan
+     * @DateTime 2021/5/17 15:17
+     * @Description 随机生成 clothing 数据
+     * @Param []
+     * @Return void
+     **/
     @Test
     public void insertSelective() throws InterruptedException {
         Clothing clothing = new Clothing();
@@ -70,7 +81,9 @@ public class ClothingExtendMapperTest {
                 "assets/clothing_picture/tt1.jpg,assets/clothing_picture/tt2.jpg,assets/clothing_picture/tt3.jpg,assets/clothing_picture/tt4.jpg,assets/clothing_picture/tt5.jpg,",
                 "assets/clothing_picture/xfna1.jpg,assets/clothing_picture/xfna2.jpg,assets/clothing_picture/xfna3.jpg,assets/clothing_picture/xfna4.jpg,assets/clothing_picture/xfna5.jpg,"
         };
+        String recommend = new String();
 
+        // 随机生成并设置首页推荐板块的服装
         for (int i = 0; i < 10; i++) {
             clothing.setClothingId(String.valueOf(System.currentTimeMillis()));
             clothing.setDate(new Date());
@@ -90,9 +103,33 @@ public class ClothingExtendMapperTest {
             clothing.setSeason(season[new Random().nextInt(1000)%season.length]);
             clothing.setSales(new Random().nextInt(9999));
             clothing.setSource((byte) (new Random().nextInt(1000)%2));
+            clothingExtendMapper.insertSelective(clothing);
+            recommend += clothing.getClothingId() + ",";
+        }
+        Home home = new Home();
+        home.setHomeId(1);
+        home.setRecommend(recommend);
+        homeExtendMapper.updateByPrimaryKeySelective(home);
 
-//            Thread.sleep(10);
-
+        for (int i = 0; i < 1000; i++) {
+            clothing.setClothingId(String.valueOf(System.currentTimeMillis()));
+            clothing.setDate(new Date());
+            clothing.setInventory(new Random().nextInt(8999)+100);
+            clothing.setTitle(title[new Random().nextInt(1000)%title.length]);
+            clothing.setPicture(picture[new Random().nextInt(1000)%picture.length]);
+            clothing.setPrice(new Random().nextInt(400)+20);
+            clothing.setSex(new Random().nextInt(1000)%2 == 0 ? "男" : "女");
+            clothing.setSize(size[new Random().nextInt(1000)%size.length]);
+            clothing.setBrandId(new Random().nextInt(1000)%7+1);
+            clothing.setCategoryId(new Random().nextInt(1000)%16+1);
+            clothing.setStyleId(new Random().nextInt(1000)%10+1);
+            clothing.setTexture(texture[new Random().nextInt(1000)%texture.length]);
+            clothing.setThickness(thickness[new Random().nextInt(1000)%thickness.length]);
+            clothing.setElastic(elastic[new Random().nextInt(1000)%elastic.length]);
+            clothing.setColour(color[new Random().nextInt(1000)%color.length]);
+            clothing.setSeason(season[new Random().nextInt(1000)%season.length]);
+            clothing.setSales(new Random().nextInt(9999));
+            clothing.setSource((byte) (new Random().nextInt(1000)%2));
             clothingExtendMapper.insertSelective(clothing);
         }
     }

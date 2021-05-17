@@ -247,7 +247,7 @@ public class UserController {
      **/
     @RequestMapping(value = "/file-upload")
     public String profilePhoto(String userId, Model model, MultipartFile uploadFile, HttpServletRequest request) throws Exception {
-        // 先获取到要上传的文件目录 从硬盘盘符（F:\）开始的绝对路径
+        // 先获取到要上传的文件目录 从硬盘盘符（如F:\）开始的绝对路径
         String path = request.getSession().getServletContext().getRealPath("/assets/profile_photo");
         // 创建File对象，一会向该路径下上传文件
         File file = new File(path);
