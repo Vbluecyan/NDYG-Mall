@@ -29,26 +29,10 @@ public class ClothingExtendMapperTest {
     @Autowired
     HomeExtendMapper homeExtendMapper;
 
-    @Test
-    public void countByExample() {
-    }
-
-    @Test
-    public void deleteByExample() {
-    }
-
-    @Test
-    public void deleteByPrimaryKey() {
-    }
-
-    @Test
-    public void insert() {
-    }
-
     /**
      * @Author bluecyan
      * @DateTime 2021/5/17 15:17
-     * @Description 随机生成 clothing 数据
+     * @Description 随机生成 clothing 数据，第一次执行前建议刷新下 Maven
      * @Param []
      * @Return void
      **/
@@ -132,6 +116,22 @@ public class ClothingExtendMapperTest {
             clothing.setSource((byte) (new Random().nextInt(1000)%2));
             clothingExtendMapper.insertSelective(clothing);
         }
+    }
+
+    @Test
+    public void countByExample() {
+    }
+
+    @Test
+    public void deleteByExample() {
+    }
+
+    @Test
+    public void deleteByPrimaryKey() {
+    }
+
+    @Test
+    public void insert() {
     }
 
     @Test
