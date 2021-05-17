@@ -8,15 +8,15 @@
 
 首页
 
-![]()
+![首页](https://images.gitee.com/uploads/images/2021/0517/135142_7fcebf0a_8937713.jpeg "home.jpg")
 
 搜索页
 
-![]()
+![搜索页](https://images.gitee.com/uploads/images/2021/0517/135243_340b64c4_8937713.jpeg "search.jpg")
 
 个人资料页
 
-![]()
+![个人资料页](https://images.gitee.com/uploads/images/2021/0517/135311_f897aaaf_8937713.jpeg "profile.jpg")
 
 ### 技术栈
 
@@ -39,9 +39,9 @@
 
 #### 架构图
 
-![]()
+![技术架构](https://images.gitee.com/uploads/images/2021/0517/135340_24a26fea_8937713.png "architecture1.png")
 
-![]()
+![技术栈](https://images.gitee.com/uploads/images/2021/0517/135402_d2390938_8937713.png "architecture2.png")
 
 ## 快速部署
 
