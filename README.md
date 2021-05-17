@@ -2,7 +2,7 @@
 
 [github|项目地址](https://github.com/Vbluecyan/NDYG-Mall) &nbsp; &nbsp; [gitee|项目地址](https://gitee.com/bluecyan/NDYG-Mall) 
 
-更多详情，请访问博文：[NDYG-Mall——基于JQuery+Bootstrap和SSM框架的电商系统/商城demo](https://blog.csdn.net/bluecyan/article/details/116939552?spm=1001.2014.3001.5501)
+更多详情，请访问博文：[NDYG-Mall—基于JQuery+Bootstrap和SSM框架的电商系统/商城demo](https://blog.csdn.net/bluecyan/article/details/116939552?spm=1001.2014.3001.5501)
 
 作者博客：[bluecyan](https://blog.csdn.net/bluecyan)
 
@@ -32,13 +32,13 @@
 
 ### 技术栈
 
-前端技术
+#### 前端技术
 
 1. JQuery
 2. Bootstrap
 3. ……
 
-后端技术
+#### 后端技术
 
 1. Spring
 2. Spring MVC
@@ -61,9 +61,9 @@
 2. 在 IntelliJ IDEA 中打开该项目（该项目使用 IDEA 开发，使用 Eclipse 效果未知）
 3. 复制并到 MySQL 数据库管理工具中执行 document/NDYG-Mall.sql 文件，将创建数据库，创建数据表，并插入初始数据
 4. 修改 src/main/resources/c3p0Config.properties 配置文件，将 MySQL 数据库配置改成自己的
-5. 刷新 Maven，之后执行 src/test/java/com/bluecyan/mapper 目录下 ClothingExtendMapperTest 类中的 insertSelective() 函数
+5. 执行 src/test/java/com/bluecyan/mapper 目录下 ClothingExtendMapperTest 类中的 insertSelective() 函数。若报错，可刷新下 Maven，之后重新尝试执行 insertSelective()  函数
 6. 配置 tomcat 并运行，大功告成
-7. 更多详情，请访问博文：[NDYG-Mall——基于JQuery+Bootstrap和SSM框架的电商系统/商城demo](https://blog.csdn.net/bluecyan/article/details/116939552?spm=1001.2014.3001.5501)
+7. 更多详情，请访问博文：[NDYG-Mall—基于JQuery+Bootstrap和SSM框架的电商系统/商城demo](https://blog.csdn.net/bluecyan/article/details/116939552?spm=1001.2014.3001.5501)
 
 ## 开源协议
 
